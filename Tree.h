@@ -12,6 +12,7 @@ template<typename TreeType> class TreeNode
         // research virtual
         // virtual ~TreeNode(); - when working with a template class
 
+        // key contains the unique key id
         TreeType key;
         TreeNode<TreeType> *left;
         TreeNode<TreeType> *right;
@@ -43,15 +44,15 @@ template<typename TreeType> class BST
          //~BST();
          //virtual ~BST() - when working with template _Jv_RegisterClasses
 
-         void insert(int value);
-         bool search( int value);
-         bool deleteNode(int k);
+        // void insert(TreeType value);
+        //bool search(TreeType  value);
+        // bool deleteNode(TreeType k);
 
-         bool isEmpty();
-         TreeNode<TreeType>* getMin();
-         TreeNode<TreeType>* getMax();
-         TreeNode<TreeType>* getSucessor(TreeNode *d);
-         void printTree(TreeNode *node);
+        // bool isEmpty();
+        // TreeNode<TreeType>* getMin();
+        // TreeNode<TreeType>* getMax();
+        // TreeNode<TreeType>* getSuccessor(TreeNode *d);
+        // void printTree(TreeNode *node);
 
 
     BST<TreeType>()
@@ -64,7 +65,7 @@ template<typename TreeType> class BST
       // todo:
     }
     // LINEAR BC YOURE PRINTING ALL THE NODES IN THE TREE
-    void printTree(TreeNode *node)
+    void printTree(TreeType *node)
     {
       if(node == NULL )
       {
@@ -75,7 +76,7 @@ template<typename TreeType> class BST
       printTree(node->right);
     }
 
-    TreeNode *getMax()
+    TreeType getMax()
     {
       TreeNode<TreeType> *curr = root;
       if(root == NULL)
@@ -86,7 +87,7 @@ template<typename TreeType> class BST
       {
         curr = curr->right;
       }
-      return curr;// you could return the value return curr->value;
+      return curr->key;// you could return the value return curr->value;
     }
 
     bool isEmpty()
@@ -100,7 +101,7 @@ template<typename TreeType> class BST
       TreeNode<TreeType>* node = new TreeNode<TreeType>(value);
       if(search(value))
       {
-        cout << "value already exists" << endl;
+        cout << "key already exists" << endl;
         return;
       }
       if(isEmpty())
@@ -247,7 +248,7 @@ template<typename TreeType> class BST
       // 2 children
       else{
         // the node to be deleted has two children
-        TreeNode<TreeType> *successor = getSucessor(current);
+        TreeNode<TreeType> *successor = getSuccessor(current);
         if(current == root)
         {
           root = successor;
@@ -265,7 +266,7 @@ template<typename TreeType> class BST
       }
     }
 
-    TreeNode* getSucessor(TreeNode *d)
+    TreeType* getSuccessor(TreeType *d)
     {
       // the parameter d represents the node to be deleted
       TreeNode<TreeType> *current = d->right;

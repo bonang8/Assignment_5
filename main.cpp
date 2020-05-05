@@ -1,7 +1,7 @@
 #include "Student.h"
 #include "ListNode.h"
 #include "Faculty.h"
-//#include "Tree.h"
+#include "Tree.h"
 #include<iostream>
 using namespace std;
 unsigned int getNewUniqueStudentID()

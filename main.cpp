@@ -79,11 +79,39 @@ int main(int argc, const char * argv[])
    delete ptr_S2;
 
    // Testing Tree
-   //BST *myTree = new BST();
-   //myTree->insert(20);
-   //myTree->insert(8);
-   //myTree->insert(22);
-   //myTree->insert(4);
-   //myTree->insert(12);
+   BST<int>*ptr_myTree = new BST<int>();
+   ptr_myTree->insert(20);
+   ptr_myTree->insert(8);
+   ptr_myTree->insert(22);
+   ptr_myTree->insert(4);
+   ptr_myTree->insert(12);
+   ptr_myTree->printTree();
+   bool searchForNum = ptr_myTree->search(20);
+   if(searchForNum)
+   {
+     cout << "found 20" << endl;
+   }
+   else
+   {
+     cout << "couldn't find 20" << endl;
+   }
+   searchForNum = ptr_myTree->search(4);
+   if(searchForNum)
+   {
+     cout << "found 4" << endl;
+   }
+   else
+   {
+     cout << "couldn't find 4" << endl;
+   }
+   searchForNum = ptr_myTree->search(100);
+   if(searchForNum)
+   {
+     cout << "found 100" << endl;
+   }
+   else
+   {
+     cout << "couldn't find 100" << endl;
+   }
 
 }

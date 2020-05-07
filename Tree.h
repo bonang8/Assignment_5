@@ -1,6 +1,7 @@
 #ifndef TREE_H
 #define TREE_H
 #include<iostream>
+#include <cstddef>
 using namespace std;
 template<typename TreeType> class TreeNode
 {
@@ -16,12 +17,14 @@ template<typename TreeType> class TreeNode
         TreeType key;
         TreeNode<TreeType> *left;
         TreeNode<TreeType> *right;
+        TreeNode<TreeType> *parent;
     // treenode implementation
     TreeNode<TreeType>()
     {
        key = 0;
        left = NULL;
        right = NULL;
+       parent = NULL;
 
     }
     TreeNode<TreeType>(TreeType k)
@@ -29,6 +32,7 @@ template<typename TreeType> class TreeNode
       key = k;
       left = NULL;
       right = NULL;
+      parent = NULL;
 
     }
 };
@@ -65,15 +69,20 @@ template<typename TreeType> class BST
       // todo:
     }
     // LINEAR BC YOURE PRINTING ALL THE NODES IN THE TREE
-    void printTree(TreeType *node)
+    void printTreeRecursive(TreeNode<TreeType> *node)
     {
       if(node == NULL )
       {
         return;
       }
-      printTree(node->left);
+      printTreeRecursive(node->left);
       cout << node->key<< endl;
-      printTree(node->right);
+      printTreeRecursive(node->right);
+    }
+    void printTree()
+    {
+      cout << "Printing Tree" << endl;
+      printTreeRecursive(root);
     }
 
     TreeType getMax()
@@ -98,7 +107,9 @@ template<typename TreeType> class BST
 
     void insert(TreeType value)
     {
+      cout << "===========Start=============" << endl;
       TreeNode<TreeType>* node = new TreeNode<TreeType>(value);
+      cout << "inserting value: " << value << endl;
       if(search(value))
       {
         cout << "key already exists" << endl;
@@ -107,6 +118,7 @@ template<typename TreeType> class BST
       if(isEmpty())
       {
         // empty tree
+        cout << "It's empty so adding root"<< endl;
         root = node;
       }
       else
@@ -117,25 +129,37 @@ template<typename TreeType> class BST
         while(true)
         {
           parent = curr;
+
           if(value < curr->key)
           {
+            cout << "going left" << endl;
             // go left
             curr = curr->left;
             if(curr == NULL)
             {
+              cout << "Current is null" << endl;
               parent->left = node;
+              node->parent = parent;
+              cout << "Now parent is on left" << endl;
+              // added this break
+              break;
             }
+
           }
           else
           {
+            cout << "In else statement: going right" << endl;
               // go right
               curr = curr->right;
-              if(curr = NULL)
+              if(curr == NULL)
               {
+                cout << "In right: NULL" << endl;
                 parent->right = node;
+                node->parent = parent;
                 // need break otherwise you will segfault
                 break;
               }
+
           }
         }
       }

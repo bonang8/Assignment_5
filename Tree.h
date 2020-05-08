@@ -14,7 +14,8 @@ template<typename TreeType> class TreeNode
         // virtual ~TreeNode(); - when working with a template class
 
         // key contains the unique key id
-        TreeType key;
+        unsigned int key;
+        TreeType *classNode;
         TreeNode<TreeType> *left;
         TreeNode<TreeType> *right;
         TreeNode<TreeType> *parent;
@@ -27,9 +28,10 @@ template<typename TreeType> class TreeNode
        parent = NULL;
 
     }
-    TreeNode<TreeType>(TreeType k)
+    TreeNode<TreeType>(unsigned int k, TreeType *data)
     {
       key = k;
+      classNode = data;
       left = NULL;
       right = NULL;
       parent = NULL;
@@ -41,22 +43,10 @@ template<typename TreeType> class TreeNode
 
 template<typename TreeType> class BST
 {
-      private:
-        TreeNode<TreeType> *root;
+      //private:
+        //TreeNode<TreeType> *root;
       public:
-         //BST();
-         //~BST();
-         //virtual ~BST() - when working with template _Jv_RegisterClasses
-
-        // void insert(TreeType value);
-        //bool search(TreeType  value);
-        // bool deleteNode(TreeType k);
-
-        // bool isEmpty();
-        // TreeNode<TreeType>* getMin();
-        // TreeNode<TreeType>* getMax();
-        // TreeNode<TreeType>* getSuccessor(TreeNode *d);
-        // void printTree(TreeNode *node);
+        TreeNode<TreeType> *root;
 
 
     BST<TreeType>()
@@ -105,12 +95,12 @@ template<typename TreeType> class BST
     }
 
 
-    void insert(TreeType value)
+    void insert(unsigned int key, TreeType *classNode)
     {
       cout << "===========Start=============" << endl;
-      TreeNode<TreeType>* node = new TreeNode<TreeType>(value);
-      cout << "inserting value: " << value << endl;
-      if(search(value))
+      TreeNode<TreeType>* node = new TreeNode<TreeType>(key, classNode);
+      //cout << "inserting value: " << value << endl;
+      if(search(key))
       {
         cout << "key already exists" << endl;
         return;
@@ -130,7 +120,7 @@ template<typename TreeType> class BST
         {
           parent = curr;
 
-          if(value < curr->key)
+          if(key < curr->key)
           {
             cout << "going left" << endl;
             // go left
@@ -164,8 +154,8 @@ template<typename TreeType> class BST
         }
       }
     }
-
-    bool search(TreeType value)
+   // TODO: create another function and rename search to check tree.
+    bool search(unsigned int value)
     {
       if(isEmpty())
          return false;
@@ -184,7 +174,7 @@ template<typename TreeType> class BST
      return true; // we found it
 
     }
-
+    
     // cases to delete node
     // 1. leaf node - easy
     // 2. has 2 children- hard
@@ -290,29 +280,66 @@ template<typename TreeType> class BST
       }
     }
 
-    TreeType* getSuccessor(TreeType *d)
+  // get child node with min value of specified node
+  // keep going down left hand side of subtree
+  TreeNode<TreeType>*  getMinNode(TreeNode<TreeType> *node)
+  {
+    TreeNode<TreeType> *curr = node;
+    if(root == NULL)
     {
-      // the parameter d represents the node to be deleted
-      TreeNode<TreeType> *current = d->right;
-      // sp - successor's parent
-      TreeNode<TreeType> *sp = d;
-      TreeNode<TreeType> *successor = d;
-      while(current != NULL)
-      {
-        sp = successor;
-        successor = current;
-        // until current equal's NULL we go all the way left
-        current = current->left;
-      }
-      // if the successor is not the right child of the node to be
-      // deleted then we do this (if is the right child then it is the node)
-      if(successor != d->right)
-      {
-        sp->left = successor->right;
-        successor->right = d->right;
-      }
-      return successor;
-    }// end of class
+      return NULL;
+    }
+    // loop down to find the left most leaf node
+    while(curr->left != NULL)
+    {
+      curr = curr->left;
+    }
+    return curr;
+  }
+
+  // testing getSuccessor
+  TreeNode<TreeType>* getSuccessor(TreeNode<TreeType> *node)
+  {
+       // if we can get the minimum of the right subtree; that will be the successor.
+        if(node->right != NULL)
+        {
+          return getMinNode(node->right);
+        }
+
+      // otherwise, we have to move up the tree to find the sucessor
+        TreeNode<TreeType> *p = node->parent;
+        while(p != NULL && node == p->right)
+        {
+          node = p;
+          p = p->parent;
+        }
+        return p;
+}
+// alternative way to approach get successor
+#if 0
+    // the parameter d represents the node to be deleted
+    TreeNode<TreeType> *current = node->right;
+    // sp - successor's parent
+    TreeNode<TreeType> *sp = node;
+    TreeNode<TreeType> *successor = node;
+    while(current != NULL)
+    {
+      sp = successor;
+      successor = current;
+      // until current equal's NULL we go all the way left
+      current = current->left;
+    }
+    // if the successor is not the right child of the node to be
+    // deleted then we do this (if is the right child then it is the node)
+    if(successor != node->right)
+    {
+      sp->left = successor->right;
+      successor->right = node->right;
+    }
+    return successor;
+  }// end of class
+
+#endif
 
 };
 #endif

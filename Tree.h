@@ -1,3 +1,4 @@
+// Version 2
 #ifndef TREE_H
 #define TREE_H
 #include<iostream>
@@ -58,7 +59,8 @@ template<typename TreeType> class BST
     {
       // todo:
     }
-    // LINEAR BC YOURE PRINTING ALL THE NODES IN THE TREE
+
+    // This will print the keys by using recursion
     void printTreeRecursive(TreeNode<TreeType> *node)
     {
       if(node == NULL )
@@ -73,6 +75,30 @@ template<typename TreeType> class BST
     {
       cout << "Printing Tree" << endl;
       printTreeRecursive(root);
+    }
+
+    // prints the Tree node
+    void printTreeNodeRecursive(TreeNode<TreeType> *node)
+    {
+      if(node == NULL )
+      {
+        return;
+      }
+      printTreeNodeRecursive(node->left);
+      //cout << "ID: " << node->key << " " << *node->classNode << endl;
+      cout << *node->classNode << endl;
+      printTreeNodeRecursive(node->right);
+    }
+    void printTreeNodes()
+    {
+      cout << "==Printing Tree Node Information==" << endl;
+      printTreeNodeRecursive(root);
+    }
+
+    void printTreeNode(unsigned int id)
+    {
+      cout << *get(id) << endl;
+
     }
 
     TreeType getMax()
@@ -174,11 +200,32 @@ template<typename TreeType> class BST
      return true; // we found it
 
     }
-    
+
+    // get - given the student ID, it returns the node
+    TreeType *get (unsigned int id)
+    {
+      TreeNode<TreeType> *current = root;
+      if(isEmpty())
+         return NULL;
+      else{
+        // its not an empty tree
+        while(current->key != id){
+           if(id < current->key)
+             current = current->left;
+           else
+             current = current->right;
+           if(current == NULL) // we didn't find value
+              return NULL;
+        }
+      }
+     return current->classNode; // we found it
+    }
+
+
     // cases to delete node
     // 1. leaf node - easy
     // 2. has 2 children- hard
-    bool deleteNode(TreeType k)
+    bool deleteNode(unsigned int k)
     {
       if(isEmpty())
           return false;

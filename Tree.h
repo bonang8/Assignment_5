@@ -48,6 +48,7 @@ template<typename TreeType> class BST
         //TreeNode<TreeType> *root;
       public:
         TreeNode<TreeType> *root;
+        unsigned int uniqueID = 1;
 
 
     BST<TreeType>()
@@ -58,6 +59,24 @@ template<typename TreeType> class BST
     ~BST<TreeType>()
     {
       // todo:
+    }
+    //This will generate the next available unique id
+    unsigned int generateID()
+    {
+      bool noNewID = true;
+      while(noNewID){
+         if(search(uniqueID))
+         {
+           cout << "id already exists" << endl;
+           uniqueID++;
+         }
+         else
+         {
+           // not in the tree. so ID generated is good
+           noNewID = false;
+         }
+      }
+       return uniqueID;
     }
 
     // This will print the keys by using recursion

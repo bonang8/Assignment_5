@@ -104,6 +104,6 @@ void Student::setLevel(string level)
 ostream& operator<<(ostream& os, const Student& s)
 {
    os << "id: " << s.id << " name: " << s.name << " level: " << s.level << " major: " << s.major << " gpa: "<< s.gpa<< " advisorField: " << s.advisorField;
-   return os; 
+   return os;
 }
 #endif

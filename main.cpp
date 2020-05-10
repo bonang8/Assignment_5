@@ -157,7 +157,7 @@ cout << "=========START OF PROGRAM========="<< endl;
   cout << "7: Add a new student" << endl;
   cout << "8: Delete a student given the id" << endl;
   cout << "9: Add a new faculty member" << endl;
-  cout << "10: Delete a faculty member given the id" << endl; 
+  cout << "10: Delete a faculty member given the id" << endl;
   cin >> answer;
 
   //prints all studenst and their information
@@ -221,6 +221,14 @@ cout << "=========START OF PROGRAM========="<< endl;
         int tempAdvisorField  = 0;
         cout << "Please enter the students ID number: " << endl;
         cin >> tempID;
+        // if the id that the user inputted already exist, then generate a new id for the student
+        if(ptr_studentTree->search(tempID))
+        {
+          unsigned int newTempID = 0;
+          newTempID = ptr_studentTree->generateID();
+          tempID = newTempID;
+          cout << "generated valid ID#: " << tempID << endl;
+        }
         cout << "Please enter in their name: " << endl;
         cin >> tempName;
         cout << "Please enter their level: " << endl;
@@ -267,6 +275,13 @@ cout << "=========START OF PROGRAM========="<< endl;
       string tempDepartment = "";
       cout << "Please enter in the ID" << endl;
       cin >> tempID;
+      if(ptr_facultyTree->search(tempID))
+      {
+        unsigned int newTempID = 0;
+        newTempID = ptr_facultyTree->generateID();
+        tempID = newTempID;
+        cout << "generated valid ID#: " << tempID << endl;
+      }
       cout << "Please enter in their name: " << endl;
       cin >> tempName;
       cout << "Please enter in their level: " << endl;

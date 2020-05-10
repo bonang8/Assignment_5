@@ -226,17 +226,51 @@ template<typename ListNodeType> class DoublyLinkedList {
       }
    #endif
 
-// NOTE: NOT NEEDED
-  /* int NaiveList::search(int val)
+
+bool search(unsigned int val)
   {
-    return position;
+    bool adviseeInData = false;
+    // create a temp pointer
+    ListNode<ListNodeType>*curr = front;
+    // iterate
+    while(curr != NULL)
+    {
+      if(curr->data == val)
+      {
+        adviseeInData = true;
+        break;
+      }
+      curr = curr->next;
+    }
+    return adviseeInData;
   }
+
+  /*
   int NaiveList::removeAtPos(int pos)
   {
     int pos = -1;
 
   }
   */
+    // we need to create a function that is able to access each node and return at a specific position
+    ListNodeType positionAt(int pos)
+    {
+      ListNode<ListNodeType>*curr = front;
+
+      for(int i = 0; !(i == pos); i++)
+      {
+         if(curr->next == NULL)
+         {
+           cout << "The position does not exists" << endl;
+         }
+         else
+         {
+           curr = curr->next;
+         }
+      }
+      return curr->data;
+
+    }
 
 };
 #endif

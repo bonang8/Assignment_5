@@ -36,7 +36,7 @@ class Student:public Records
    void setID(unsigned int id);
    void setName(string name);
    void setLevel(string level);
-   friend ostream& operator<<(ostream& os, const Student& s); 
+   friend ostream& operator<<(ostream& os, const Student& s);
 
 
 };

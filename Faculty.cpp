@@ -37,6 +37,26 @@ void Faculty::printAdvisee()
   ptr_listAdviseesIDs->printList();
 }
 #endif
+// checks if the advisee is in the linked lists
+bool Faculty::search(unsigned int adviseeID)
+{
+  return ptr_listAdviseesIDs->search(adviseeID);
+}
+
+unsigned int Faculty::getAdviseeIDAtPos(int pos)
+{
+  return (ptr_listAdviseesIDs->positionAt(pos));
+}
+
+bool Faculty::isAdviseeListEmpty()
+{
+  return (ptr_listAdviseesIDs->isEmpty());
+}
+
+int Faculty::adviseeListSize()
+{
+  return (ptr_listAdviseesIDs->getSize());
+}
 // getters
 unsigned int Faculty::getID()
 {

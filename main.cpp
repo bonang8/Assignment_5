@@ -1,3 +1,4 @@
+//Version 4
 #include "Student.h"
 #include "ListNode.h"
 #include "Faculty.h"
@@ -108,16 +109,16 @@ cout << "=========START OF PROGRAM========="<< endl;
    if(answer == 6){
      int tempID = -1;
      if(ptr_facultyTree->isEmpty()){
-       cout << "The faculty data base is empty" << endl;
+       cout << "The faculty database is empty" << endl;
      }else{
-       cout << "Please enter in the faculty's ID: " << endl;
+       cout << "Please enter the ID of the faculty member: " << endl;
        cin >> tempID;
+       for(int i = 0; !(ptr_facultyTree->get(tempID)->ptr_listAdviseesIDs->isEmpty(); i++){
+         cout << "===List of Advisees===" << endl;
+         cout << ptr_studentTree->get(ptr_facultyTree->get(tempID)->ptr_listAdviseesIDs->get(i)) << endl;
+       }
      }
    }
-
-
-
-
   // To add a new Student
   if(answer == 7){
         unsigned int tempID = 0;

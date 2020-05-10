@@ -32,5 +32,8 @@ class Faculty:public Records
     bool operator <(Faculty& f);
     bool operator >(Faculty& f);
     bool operator ==(Faculty& f);
-
+    bool search(unsigned int adviseeID);
+    unsigned int getAdviseeIDAtPos(int pos);
+    bool isAdviseeListEmpty();
+    int adviseeListSize();
 };

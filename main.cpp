@@ -12,8 +12,9 @@ unsigned int getNewUniqueStudentID()
 }
 int main(int argc, const char * argv[])
 {
-   cout << "Hello" << endl;
-
+  bool setter = true;
+  BST<Faculty> *ptr_facultyTree = new BST<Faculty>();
+  BST<Student> *ptr_studentTree = new BST<Student>();
    unsigned int uniqueStudentID = getNewUniqueStudentID();
    cout << "uniqueStudentID: " << uniqueStudentID << endl;
    Student *ptr_S = new Student(uniqueStudentID, "Clarisse", "Junior", "Computer Science", 3.8, 2525);
@@ -22,130 +23,9 @@ int main(int argc, const char * argv[])
    Student *ptr_S2 = new Student(uniqueStudentID, "Mia", "Junior", "Computer Science", 3.8, 2525);
    Faculty *ptr_F = new Faculty(3, "Johnson", "Professor", "Computer Science");
    Faculty *ptr_F2 = new Faculty(4, "Stevens", "Professor", "Computer Science");
-   //Faculty *ptr_F3 = new Faculty(3, "Trace", "Professor", "Computer Science");
-   cout << "Yo" << endl;
-   cout << *ptr_F;
-   ptr_F->insertNewAdvisee(ptr_S->id);
-   cout << endl;
-   cout << "Printing Advisees" << endl;
-   ptr_F->printAdvisee();
-   ptr_F->insertNewAdvisee(ptr_S2->id);
-   cout << "Printing Advisees" << endl;
-   ptr_F->printAdvisee();
-   cout << endl;
-
-   DoublyLinkedList<int> *ptr_DL = new DoublyLinkedList<int>();
-   ptr_DL->insertFront(1);
-   ptr_DL->insertFront(2);
-   ptr_DL->insertFront(3);
-   ptr_DL->insertFront(4);
-   ptr_DL->printList();
-   ptr_DL->remove(3);
-   cout << endl;
-   ptr_DL->printList();
-
-   cout << *ptr_S;
-   cout << endl;
-   cout << *ptr_S2;
-   cout << endl;
-   // comparing Student
-   if(*ptr_S > *ptr_S2)
-   {
-     cout << "Student_1 is itsGreaterThan Student_2"<< endl;
-   }
-   else if(*ptr_S == *ptr_S2)
-   {
-     cout << "Student_1 is equal Student_2"<< endl;
-   }
-   else
-   {
-     cout << "Student_2 is itsGreaterThan Student_1"<< endl;
-   }
-  // comparing Faculty
-   if(*ptr_F > *ptr_F2)
-   {
-     cout << "Faculty_1 is itsGreaterThan Faculty_2"<< endl;
-   }
-   else if(*ptr_F == *ptr_F2)
-   {
-     cout << "Faculty_1 is equal Faculty_2"<< endl;
-   }
-   else
-   {
-     cout << "Faculty_2 is itsGreaterThan Faculty_1"<< endl;
-   }
-
-   //delete ptr_S;
-  //  delete ptr_S2;
-
-/*
-   // Testing Tree with only ints
-   BST<int>*ptr_myTree = new BST<int>();
-   ptr_myTree->insert(20);
-   ptr_myTree->insert(8);
-   ptr_myTree->insert(22);
-   ptr_myTree->insert(4);
-   ptr_myTree->insert(12);
-   ptr_myTree->printTree();
-   bool searchForNum = ptr_myTree->search(20);
-   if(searchForNum)
-   {
-     cout << "found 20" << endl;
-   }
-   else
-   {
-     cout << "couldn't find 20" << endl;
-   }
-   searchForNum = ptr_myTree->search(4);
-   if(searchForNum)
-   {
-     cout << "found 4" << endl;
-   }
-   else
-   {
-     cout << "couldn't find 4" << endl;
-   }
-   searchForNum = ptr_myTree->search(100);
-   if(searchForNum)
-   {
-     cout << "found 100" << endl;
-   }
-   else
-   {
-     cout << "couldn't find 100" << endl;
-   }
 
 
-   bool deletedNode = ptr_myTree->deleteNode(4);
-   if(deletedNode)
-   {
-     cout << "deleted 4" << endl;
-   }
-   else
-   {
-     cout << "couldn't find 4" << endl;
-   }
-
-  TreeNode<int>*ptr_TreeNode =  ptr_myTree->getSuccessor(ptr_myTree->root);
-  cout << "TreeNode: " << ptr_TreeNode->key<< endl;
-  cout << "key: "<< ptr_myTree->root->key << endl;
-  ptr_myTree->printTree();
-
-*/
-// Testing if Tree with objects work.
-
-  BST<Student>*ptr_studentTree = new BST<Student>();
-  BST<Faculty>*ptr_facultyTree = new BST<Faculty>();
-  //student
-  ptr_studentTree->insert(ptr_S->getID(),ptr_S);
-  ptr_studentTree->insert(ptr_S2->getID(), ptr_S2);
-  ptr_studentTree->printTree();
-  //faculty
-  ptr_facultyTree->insert(ptr_F->getID(), ptr_F);
-  ptr_facultyTree->insert(ptr_F2->getID(), ptr_F2);
-  ptr_facultyTree->printTree();
-
-
+do{
 cout << "=========START OF PROGRAM========="<< endl;
   // The user's choice
   int answer = 0;
@@ -154,10 +34,15 @@ cout << "=========START OF PROGRAM========="<< endl;
   cout << "2: Print all faculty and their information" << endl;
   cout << "3: Find and display student information given the students id" << endl;
   cout << "4: Find and display faculty information given the faculty id" << endl;
+  cout << "5: Given a student’s id, print the name and info of their faculty advisor." << endl;
+  cout << "6: Given a faculty id, print ALL the names and info of his/her advisees." << endl;
   cout << "7: Add a new student" << endl;
   cout << "8: Delete a student given the id" << endl;
   cout << "9: Add a new faculty member" << endl;
   cout << "10: Delete a faculty member given the id" << endl;
+  cout << "11: Change a student’s advisor given the student id and the new faculty id." << endl;
+  cout << "12: Remove an advisee from a faculty member given the ids" << endl;
+  cout << "14: Exit program" << endl;
   cin >> answer;
 
   //prints all studenst and their information
@@ -208,6 +93,28 @@ cout << "=========START OF PROGRAM========="<< endl;
      cin >> facultyID;
      ptr_facultyTree->printTreeNode(facultyID);
    }
+   //Given a student’s id, print the name and info of their faculty advisor
+   if(answer == 5){
+     int tempID = -1;
+     if(ptr_studentTree->isEmpty()){
+       cout << "Student database is empty" << endl;
+     }else{
+       cout << "Please enter the ID of the student: " << endl;
+       cin >> tempID;
+       cout << ptr_facultyTree->get(ptr_studentTree->get(tempID)->advisorField) << endl;
+     }
+   }
+   //Given a faculty id, print ALL the names and info of his/her advisees
+   if(answer == 6){
+     int tempID = -1;
+     if(ptr_facultyTree->isEmpty()){
+       cout << "The faculty data base is empty" << endl;
+     }else{
+       cout << "Please enter in the faculty's ID: " << endl;
+       cin >> tempID;
+     }
+   }
+
 
 
 
@@ -221,14 +128,6 @@ cout << "=========START OF PROGRAM========="<< endl;
         int tempAdvisorField  = 0;
         cout << "Please enter the students ID number: " << endl;
         cin >> tempID;
-        // if the id that the user inputted already exist, then generate a new id for the student
-        if(ptr_studentTree->search(tempID))
-        {
-          unsigned int newTempID = 0;
-          newTempID = ptr_studentTree->generateID();
-          tempID = newTempID;
-          cout << "generated valid ID#: " << tempID << endl;
-        }
         cout << "Please enter in their name: " << endl;
         cin >> tempName;
         cout << "Please enter their level: " << endl;
@@ -275,13 +174,6 @@ cout << "=========START OF PROGRAM========="<< endl;
       string tempDepartment = "";
       cout << "Please enter in the ID" << endl;
       cin >> tempID;
-      if(ptr_facultyTree->search(tempID))
-      {
-        unsigned int newTempID = 0;
-        newTempID = ptr_facultyTree->generateID();
-        tempID = newTempID;
-        cout << "generated valid ID#: " << tempID << endl;
-      }
       cout << "Please enter in their name: " << endl;
       cin >> tempName;
       cout << "Please enter in their level: " << endl;
@@ -317,7 +209,50 @@ cout << "=========START OF PROGRAM========="<< endl;
          cout << "ID not found in the faculty database" << endl;
        }
     }
-
+    //Change a student’s advisor given the student id and the new faculty id.
+    if(answer == 11){
+      int tempStuID = -1;
+      int tempFacID = -1;
+      if(ptr_studentTree->isEmpty()){
+        cout << "The student data base is empty" << endl;
+      }else{
+        if(ptr_facultyTree->isEmpty()){
+          cout << "The faculty database is empty" << endl;
+        }
+        else{
+          cout << "Please enter the Student's ID: " << endl;
+          cin >> tempStuID;
+          cout << "Please enter the Faculty's ID: " << endl;
+          cin >> tempFacID;
+          cout << "Assigning: " << ptr_studentTree->get(tempStuID);
+          cout << "to: " << ptr_facultyTree->get(tempFacID) << endl;
+          ptr_studentTree->get(tempStuID)->advisorField = tempFacID;
+          ptr_facultyTree->get(tempFacID)->ptr_listAdviseesIDs->insertFront(tempStuID);
+          cout << "===Sucessfully Assigned===" << endl;
+        }
+      }
+    }
+    //Remove an advisee from a faculty member given the ids
+    if(answer == 12){
+      int tempStuID = -1;
+      int tempFacID = -1;
+      if(ptr_studentTree->isEmpty() || ptr_facultyTree->isEmpty()){
+        cout << "One of the databases is empty" << endl;
+      }else{
+        cout << "Please enter the ID of the faculty member: " << endl;
+        cin >> tempFacID;
+        cout << "Please enter in the student ID: " << endl;
+        cin >> tempStuID;
+        if(ptr_facultyTree->get(tempFacID)->ptr_listAdviseesIDs->search(tempStuID)){
+          ptr_facultyTree->get(tempFacID)->ptr_listAdviseesIDs->remove(tempStuID);
+          ptr_studentTree->get(tempStuID)->advisorField = -1;
+        }
+      }
+    }
+    if(answer == 14){
+      exit(0);
+    }
+  }while(setter);
 
 
 }

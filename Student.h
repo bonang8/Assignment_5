@@ -1,6 +1,7 @@
 #ifndef STUDENT_H
 #define STUDENT_H
 #include <iostream>
+#include <fstream>
 #include "Records.h"
 //using namespace std;
 class Student:public Records
@@ -39,6 +40,11 @@ class Student:public Records
    void setName(string name);
    void setLevel(string level);
    friend ostream& operator<<(ostream& os, const Student& s);
+   // to serialize
+   string serializeToString();
+
+   static Student *deserializeFromString(string str_serialization); 
+
 
 
 };

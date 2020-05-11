@@ -28,6 +28,15 @@ int main(int argc, const char * argv[])
    Faculty *ptr_F = new Faculty(3, "Johnson", "Professor", "Computer Science");
    Faculty *ptr_F2 = new Faculty(4, "Stevens", "Professor", "Computer Science");
    Faculty *ptr_F3 = new Faculty(5, "Groot", "Professor", "Computer Science");
+
+
+   #if 1 // test serializaion code, temporary
+   string studentSerializeToString = ptr_S->serializeToString();
+   Student *ptr_sTest = Student::deserializeFromString(studentSerializeToString);
+   ptr_F2->insertNewAdvisee(ptr_S4->id); 
+   string facultySerializeToString = ptr_F2->serializeToString();
+   Faculty *ptr_fTest = Faculty::deserializeFromString(facultySerializeToString);
+   #endif// end of test code
    //Faculty *ptr_F3 = new Faculty(3, "Trace", "Professor", "Computer Science");
    cout << "Yo" << endl;
    cout << *ptr_F;

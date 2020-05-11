@@ -122,3 +122,63 @@ bool Faculty::operator ==(Faculty& f)
   }
   return false;
 }
+
+string Faculty::serializeToString()
+{
+  string str_serialization = to_string(this->id) + "," + this->name + "," + this->level + "," +  this->getDepartment();
+
+  if(!(ptr_listAdviseesIDs->isEmpty()))
+  {
+    int sizeOfList = ptr_listAdviseesIDs->getSize();
+    for( int i = 0; i < sizeOfList; ++i)
+    {
+      str_serialization += ",";
+      unsigned int idAdvisee = ptr_listAdviseesIDs->positionAt(i);
+      str_serialization += to_string(idAdvisee);
+    }
+  }
+   str_serialization += ",";
+   return str_serialization;
+}
+
+Faculty *Faculty::deserializeFromString(string str_serialization)
+{
+  // extract ',' delimited member variable values from string
+
+  cout << str_serialization << endl;
+  string substrings[4];// each substring holds the data for one member variable
+  //any Professor who has 100 advisees would be dead...
+  // This array size is bigger than any reasonable number of advisees
+  int adviseesIDs[100];
+  string delimiter = ",";
+  int i = 0;
+  int adviseeIndex = 0;
+  size_t pos = 0;
+  string token;
+  while ((pos = str_serialization.find(delimiter)) != std::string::npos) {
+      token = str_serialization.substr(0, pos);
+      cout << token << endl;
+      if(i < 4)
+      {
+        substrings[i] = token;
+      }
+      else
+      {
+         adviseesIDs[adviseeIndex] = stoi(token);
+         adviseeIndex++;
+      }
+      str_serialization.erase(0, pos + delimiter.length());
+      i++;
+  }
+  unsigned tempID = stoi(substrings[0]);
+  string tempName = substrings[1];
+  string tempLevel = substrings[2];
+  string tempDepartment = substrings[3];
+  Faculty *ptr_Faculty = new Faculty(tempID,tempName,tempLevel,tempDepartment);
+  for(int j = 0; j < adviseeIndex; ++j)
+  {
+    ptr_Faculty->insertNewAdvisee(adviseesIDs[j]);
+  }
+
+  return ptr_Faculty;
+}

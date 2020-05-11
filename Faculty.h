@@ -1,6 +1,8 @@
 #ifndef FACULTY_H
 #define FACULTY_H
 #include <iostream>
+#include <fstream>
+#include <string>
 #include"Records.h"
 #include "ListNode.h"
 using namespace std;
@@ -38,5 +40,8 @@ class Faculty:public Records
     unsigned int getAdviseeIDAtPos(int pos);
     bool isAdviseeListEmpty();
     int adviseeListSize();
+    // this is th serialize
+    string serializeToString();
+    static Faculty *deserializeFromString(string str_serialization);
 };
 #endif

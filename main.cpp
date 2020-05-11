@@ -2,7 +2,10 @@
 #include "ListNode.h"
 #include "Faculty.h"
 #include "Tree.h"
+#include "Rollback.h"
+#include "Transaction.h"
 #include<iostream>
+#include<string>
 using namespace std;
 unsigned int getNewUniqueStudentID()
 {
@@ -83,68 +86,16 @@ int main(int argc, const char * argv[])
      cout << "Faculty_2 is itsGreaterThan Faculty_1"<< endl;
    }
 
-   //delete ptr_S;
-  //  delete ptr_S2;
 
-/*
-   // Testing Tree with only ints
-   BST<int>*ptr_myTree = new BST<int>();
-   ptr_myTree->insert(20);
-   ptr_myTree->insert(8);
-   ptr_myTree->insert(22);
-   ptr_myTree->insert(4);
-   ptr_myTree->insert(12);
-   ptr_myTree->printTree();
-   bool searchForNum = ptr_myTree->search(20);
-   if(searchForNum)
-   {
-     cout << "found 20" << endl;
-   }
-   else
-   {
-     cout << "couldn't find 20" << endl;
-   }
-   searchForNum = ptr_myTree->search(4);
-   if(searchForNum)
-   {
-     cout << "found 4" << endl;
-   }
-   else
-   {
-     cout << "couldn't find 4" << endl;
-   }
-   searchForNum = ptr_myTree->search(100);
-   if(searchForNum)
-   {
-     cout << "found 100" << endl;
-   }
-   else
-   {
-     cout << "couldn't find 100" << endl;
-   }
-
-
-   bool deletedNode = ptr_myTree->deleteNode(4);
-   if(deletedNode)
-   {
-     cout << "deleted 4" << endl;
-   }
-   else
-   {
-     cout << "couldn't find 4" << endl;
-   }
-
-  TreeNode<int>*ptr_TreeNode =  ptr_myTree->getSuccessor(ptr_myTree->root);
-  cout << "TreeNode: " << ptr_TreeNode->key<< endl;
-  cout << "key: "<< ptr_myTree->root->key << endl;
-  ptr_myTree->printTree();
-
-*/
 // setter - used in do while loop
  bool setter = true;
 // Testing if Tree with objects work.
   BST<Student>*ptr_studentTree = new BST<Student>();
   BST<Faculty>*ptr_facultyTree = new BST<Faculty>();
+  // will be used for option 13
+  //Transaction*ptr_transaction = new Transaction();
+  Rollback*ptr_rollback = new Rollback(ptr_studentTree, ptr_facultyTree);
+
   //student
   ptr_studentTree->insert(ptr_S->getID(),ptr_S);
   ptr_studentTree->insert(ptr_S2->getID(), ptr_S2);
@@ -171,6 +122,9 @@ do{
         cout << "9: Add a new faculty member" << endl;
         cout << "10: Delete a faculty member given the id" << endl;
         cout << "11: Change a student’s advisor given the student id and the new faculty id " << endl;
+        cout << "12. Remove an advisee from a faculty member given the ids" << endl;
+        cout << "13. Rollback" << endl;
+        cout << "14. Exit" << endl;
         cin >> answer;
 
         //prints all studenst and their information
@@ -297,6 +251,11 @@ do{
               cout << "Inserting student into faculty list of advisees" << endl;
               ptr_facultyTree->get(tempAdvisorField)->insertNewAdvisee(tempID);
               cout << "Added Sucessfully" << endl;
+              // store this in transaction
+              string str_id = to_string(tempID);
+              string transactionDescription = "Add StudentID " + str_id;
+              Transaction*ptr_transaction = new Transaction(7, ptr_Student, NULL, transactionDescription,tempID,0);
+              ptr_rollback->addTransaction(*ptr_transaction);
             }
 
         // Delete a student given the id
@@ -359,6 +318,10 @@ do{
             Faculty *ptr_Faculty = new Faculty(tempID, tempName, tempLevel, tempDepartment);
             ptr_facultyTree->insert(tempID, ptr_Faculty);
             cout << "Sucessfully inserted" << endl;
+            string str_id = to_string(tempID);
+            string transactionDescription = "Add FacultyID " + str_id;
+            Transaction*ptr_transaction = new Transaction(9, NULL, ptr_Faculty, transactionDescription,0,tempID);
+            ptr_rollback->addTransaction(*ptr_transaction);
           }
 
           //Delete a faculty member given the id.
@@ -483,6 +446,13 @@ do{
                    cout << "==Student or FacultyID does not exists in database==" << endl;
                  }
               }
+            }
+
+            if(answer == 13)
+            {
+              cout << "Rollback "<< endl;
+              ptr_rollback->rollback();
+
             }
 
             if(answer == 14){

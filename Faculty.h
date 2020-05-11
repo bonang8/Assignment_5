@@ -1,3 +1,5 @@
+#ifndef FACULTY_H
+#define FACULTY_H
 #include <iostream>
 #include"Records.h"
 #include "ListNode.h"
@@ -37,3 +39,4 @@ class Faculty:public Records
     bool isAdviseeListEmpty();
     int adviseeListSize();
 };
+#endif

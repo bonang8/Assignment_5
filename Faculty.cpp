@@ -1,5 +1,3 @@
-#ifndef FACULTY_H
-#define FACULTY_H
 #include "Faculty.h"
 #include <iostream>
 using namespace std;
@@ -124,5 +122,3 @@ bool Faculty::operator ==(Faculty& f)
   }
   return false;
 }
-
-#endif

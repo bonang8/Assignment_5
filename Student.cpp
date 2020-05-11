@@ -1,5 +1,3 @@
-#ifndef STUDENT_H
-#define STUDENT_H
 #include "Student.h"
 Student::Student()
 {
@@ -106,4 +104,3 @@ ostream& operator<<(ostream& os, const Student& s)
    os << "id: " << s.id << " name: " << s.name << " level: " << s.level << " major: " << s.major << " gpa: "<< s.gpa<< " advisorField: " << s.advisorField;
    return os;
 }
-#endif

@@ -17,6 +17,7 @@ class Transaction{
     // keeps track of faculty id
     // useful if advisor and advisee is modified
     unsigned int idFaculty;
+    unsigned int idFacultyPrevious; // id of faculty advisor prior to reassignment of student's advisor
     Student *ptr_student;
     Faculty *ptr_faculty;
 
@@ -37,8 +38,16 @@ class Transaction{
        this->str_TransactionDescription = str_TransactionDescription;
        this->idStudent = idStudent;
        this->idFaculty = idFaculty;
+       this->idFacultyPrevious = -1;
     }
-
+   void setFacultyPrevious(unsigned int idFacultyPrevious)
+   {
+     this->idFacultyPrevious = idFacultyPrevious;
+   }
+   unsigned int getFacultyPrevious()
+   {
+     return idFacultyPrevious; 
+   }
    // getters
    int getTransactionType()
    {

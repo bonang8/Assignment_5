@@ -379,6 +379,8 @@ do{
              else if(ptr_facultyTree->search(facultyID))
              {
                unsigned int studentID = 0;
+               //faculty object could be deleted to a string
+               string str_faculty_serialized = ptr_facultyTree->get(facultyID)->serializeToString();
                // check if advisee list is empty
                if(!(ptr_facultyTree->get(facultyID)->isAdviseeListEmpty())){
                    // The code below updates students
@@ -396,7 +398,13 @@ do{
                ptr_facultyTree->deleteNode(facultyID);
                cout << "===Updated faculty database===" << endl;
                ptr_facultyTree->printTree();
-              cout << "Task Completed" << endl;
+               Faculty*ptr_facultyDeserialized = Faculty::deserializeFromString(str_faculty_serialized);
+               string str_id = to_string(facultyID);
+               string transactionDescription = "Delete FacultyID " + str_id;
+               Transaction*ptr_transaction = new Transaction(10, NULL, ptr_facultyDeserialized, transactionDescription,0,facultyID);
+               ptr_rollback->addTransaction(*ptr_transaction);
+
+               cout << "Task Completed" << endl;
              }
              else
              {
@@ -421,6 +429,9 @@ do{
                    cin >> tempStuID;
                    cout << "Please enter the new Faculty's ID: " << endl;
                    cin >> tempFacID;
+                  if(ptr_studentTree->search(tempStuID)){
+                    cout << "StudentID: " << tempStuID << " Not found: No change made" << endl;
+
                    // check if faculty ID is in the tree
                    if(ptr_facultyTree->search(tempFacID)){
                          cout << "Assigning: " << ptr_studentTree->get(tempStuID)->getName();
@@ -441,6 +452,7 @@ do{
                          else
                          {
                            cout << "Error: advisee was not assigned to old faculty ID | need a program check" << endl;
+
                          }
                          // reassign the advisorField to the new faculty id
                          ptr_studentTree->get(tempStuID)->advisorField = tempFacID;
@@ -448,12 +460,22 @@ do{
                          ptr_facultyTree->get(tempFacID)->insertNewAdvisee(tempStuID);
                          cout << "===Updated student with new Advisee==="<< endl;
                          ptr_studentTree->printTreeNode(tempStuID);
+                         string str_studentID = to_string(tempStuID);
+                         string str_newFacultyID = to_string(tempFacID);
+                         string str_oldFacultyID = to_string(oldFacID);
+                         string transactionDescription = "Change FacultyAdvisorOfStudent ID: " + str_studentID;
+                         transactionDescription += (" From FacultyID: " + str_oldFacultyID + " To New FacultyID: " + str_newFacultyID);
+                         Transaction*ptr_transaction = new Transaction(11, NULL, NULL, transactionDescription,tempStuID,tempFacID);
+                         ptr_transaction->setFacultyPrevious(oldFacID);
+                         ptr_rollback->addTransaction(*ptr_transaction);
                          cout << "===Sucessfully Assigned===" << endl;
                     }
                     else
                     {
                       cout << "New Faculty ID does not exists in the database" << endl;
+
                     }
+                  }
                  }
                }
              }
@@ -480,6 +502,17 @@ do{
                       ptr_facultyTree->get(tempFacID)->removeAdvisee(tempStuID);
                       // update Student to currently not have an advisee
                       ptr_studentTree->get(tempStuID)->advisorField = -1;
+                      // Transfer data to Rollback
+                      string str_studentID = to_string(tempStuID);
+                      string str_facultyID = to_string(tempFacID);
+                      string transactionDescription = "rollbackRemovesFacultyAdvisee: " + str_studentID + " from FacultyID: " + str_facultyID;
+                      Transaction*ptr_transaction = new Transaction(12, NULL, NULL, transactionDescription,tempStuID,tempFacID);
+                      ptr_rollback->addTransaction(*ptr_transaction);
+                    }
+                    else
+                    {
+                      cout << "StudentID: " << tempStuID << " does not exists in Faculty's list of advisees" << endl;
+                      cout << ">>Unable to execute command" << endl;
                     }
                  }
                  else

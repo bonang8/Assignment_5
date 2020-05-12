@@ -1,0 +1,4 @@
+1,Clarisse,Junior,Computer Science,3.800000,4,
+2,Mia,Junior,Computer Science,3.800000,3,
+3,Jack,Freshmen,Computer Science,3.800000,3,
+4,Zoey,Senior,Computer Science,3.800000,4,

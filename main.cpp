@@ -13,121 +13,27 @@ unsigned int getNewUniqueStudentID()
   nextUniqueStudentID++;
   return nextUniqueStudentID;
 }
+bool readStudentTable(BST<Student>*ptr_studentTree);
+bool readFacultyTable(BST<Faculty>*ptr_facultyTree);
+
 int main(int argc, const char * argv[])
 {
-   cout << "Hello" << endl;
+   cout << "Student/Faculty Database Program Loading..." << endl;
 
-   unsigned int uniqueStudentID = getNewUniqueStudentID();
-   cout << "uniqueStudentID: " << uniqueStudentID << endl;
-   Student *ptr_S = new Student(uniqueStudentID, "Clarisse", "Junior", "Computer Science", 3.8, 4);
-   uniqueStudentID = getNewUniqueStudentID();
-   cout << "uniqueStudentID: " << uniqueStudentID << endl;
-   Student *ptr_S2 = new Student(uniqueStudentID, "Mia", "Junior", "Computer Science", 3.8, 3);
-   uniqueStudentID = getNewUniqueStudentID();
-   Student *ptr_S3 = new Student(uniqueStudentID, "Jack", "Freshmen", "Computer Science", 3.8, 3);
-   uniqueStudentID = getNewUniqueStudentID();
-   Student *ptr_S4 = new Student(uniqueStudentID, "Zoey", "Senior", "Computer Science", 3.8, 4);
-   Faculty *ptr_F = new Faculty(3, "Johnson", "Professor", "Computer Science");
-   Faculty *ptr_F2 = new Faculty(4, "Stevens", "Professor", "Computer Science");
-   Faculty *ptr_F3 = new Faculty(5, "Groot", "Professor", "Computer Science");
-
-
-   #if 1 // test serializaion code, temporary
-   string studentSerializeToString = ptr_S->serializeToString();
-   Student *ptr_sTest = Student::deserializeFromString(studentSerializeToString);
-   ptr_F2->insertNewAdvisee(ptr_S4->id);
-   ptr_F2->insertNewAdvisee(ptr_S->id);
-   ptr_F->insertNewAdvisee(ptr_S2->id);
-   ptr_F->insertNewAdvisee(ptr_S3->id);
-   string facultySerializeToString = ptr_F2->serializeToString();
-   Faculty *ptr_fTest = Faculty::deserializeFromString(facultySerializeToString);
-   #endif// end of test code
-   //Faculty *ptr_F3 = new Faculty(3, "Trace", "Professor", "Computer Science");
-   cout << "Yo" << endl;
-   cout << *ptr_F;
-   //ptr_F->insertNewAdvisee(ptr_S3->id);
-   cout << endl;
-   cout << "Printing Advisees" << endl;
-   ptr_F->printAdvisee();
-   //ptr_F->insertNewAdvisee(ptr_S4->id);
-   cout << "Printing Advisees" << endl;
-   ptr_F->printAdvisee();
-   cout << endl;
-   #if 0
-   ptr_F2->insertNewAdvisee(ptr_S->id);
-   ptr_F2->printAdvisee();
-   ptr_F->insertNewAdvisee(ptr_S2->id);
-   ptr_F2->printAdvisee();
-   ptr_F2->insertNewAdvisee(ptr_S4->id);
-   #endif
-
-
-
-
-   DoublyLinkedList<int> *ptr_DL = new DoublyLinkedList<int>();
-   ptr_DL->insertFront(1);
-   ptr_DL->insertFront(2);
-   ptr_DL->insertFront(3);
-   ptr_DL->insertFront(4);
-   ptr_DL->printList();
-   ptr_DL->remove(3);
-   cout << endl;
-   ptr_DL->printList();
-
-   cout << *ptr_S;
-   cout << endl;
-   cout << *ptr_S2;
-   cout << endl;
-   // comparing Student
-   if(*ptr_S > *ptr_S2)
-   {
-     cout << "Student_1 is itsGreaterThan Student_2"<< endl;
-   }
-   else if(*ptr_S == *ptr_S2)
-   {
-     cout << "Student_1 is equal Student_2"<< endl;
-   }
-   else
-   {
-     cout << "Student_2 is itsGreaterThan Student_1"<< endl;
-   }
-  // comparing Faculty
-   if(*ptr_F > *ptr_F2)
-   {
-     cout << "Faculty_1 is itsGreaterThan Faculty_2"<< endl;
-   }
-   else if(*ptr_F == *ptr_F2)
-   {
-     cout << "Faculty_1 is equal Faculty_2"<< endl;
-   }
-   else
-   {
-     cout << "Faculty_2 is itsGreaterThan Faculty_1"<< endl;
-   }
-
-
-// setter - used in do while loop
- bool setter = true;
-// Testing if Tree with objects work.
-  BST<Student>*ptr_studentTree = new BST<Student>();
-  BST<Faculty>*ptr_facultyTree = new BST<Faculty>();
+   // setter - used in do while loop
+   bool setter = true;
+   // Testing if Tree with objects work.
+   BST<Student>*ptr_studentTree = new BST<Student>();
+   BST<Faculty>*ptr_facultyTree = new BST<Faculty>();
   // will be used for option 13
-  //Transaction*ptr_transaction = new Transaction();
-  Rollback*ptr_rollback = new Rollback(ptr_studentTree, ptr_facultyTree);
+   Rollback*ptr_rollback = new Rollback(ptr_studentTree, ptr_facultyTree);
 
-  //student
-  ptr_studentTree->insert(ptr_S->getID(),ptr_S);
-  ptr_studentTree->insert(ptr_S2->getID(), ptr_S2);
-  ptr_studentTree->insert(ptr_S3->getID(), ptr_S3);
-  ptr_studentTree->insert(ptr_S4->getID(), ptr_S4);
-  ptr_studentTree->printTree();
-  //faculty
-  ptr_facultyTree->insert(ptr_F->getID(), ptr_F);
-  ptr_facultyTree->insert(ptr_F2->getID(), ptr_F2);
-  ptr_facultyTree->insert(ptr_F3->getID(), ptr_F3);
-  ptr_facultyTree->printTree();
+   readStudentTable(ptr_studentTree);
+   readFacultyTable(ptr_facultyTree);
+   ptr_studentTree->printTree();
+   ptr_facultyTree->printTree();
 
-do{
+ do{
       cout << "=========START OF PROGRAM========="<< endl;
         // The user's choice
         int answer = 0;
@@ -534,4 +440,62 @@ do{
             }
 
     }while(setter);
+}
+
+bool readStudentTable(BST<Student>*ptr_studentTree)
+{
+  bool success = false;
+  if(ptr_studentTree != NULL)
+  {
+    ifstream myIFileStudent("studentTable.txt");
+    if(myIFileStudent.good()){
+      string line = "";
+      while(!myIFileStudent.eof()){
+        getline(myIFileStudent, line);
+        if(line.length() > 1){
+          Student *tempStudent = Student::deserializeFromString(line);
+          ptr_studentTree->insert(tempStudent->getID(), tempStudent);
+        }
+      }
+      success = true;
+    }
+    else
+    {
+      cout << "Unable to open student table file " << endl;
+    }
+  }
+  else
+  {
+    cout << "Error: invalid student tree pointer " << endl;
+  }
+  return success;
+}
+
+bool readFacultyTable(BST<Faculty>*ptr_facultyTree)
+{
+  bool success = false;
+  if(ptr_facultyTree != NULL)
+  {
+    ifstream myIFileFaculty("facultyTable.txt");
+    if(myIFileFaculty.good()){
+      string line = "";
+      while(!myIFileFaculty.eof()){
+        getline(myIFileFaculty, line);
+          if(line.length() > 1){
+              Faculty *tempFaculty = Faculty::deserializeFromString(line);
+              ptr_facultyTree->insert(tempFaculty->getID(), tempFaculty);
+          }
+      }
+      success = true;
+    }
+    else
+    {
+      cout << "Unable to open faculty table file " << endl;
+    }
+  }
+  else
+  {
+    cout << "Error: invalid faculty tree pointer " << endl;
+  }
+  return success;
 }

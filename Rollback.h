@@ -41,6 +41,9 @@ class Rollback
            case 7:
               rollbackAddStudent(transaction);
               break;
+           case 8:
+              rollbackDeleteStudent(transaction);
+              break;
            case 9:
               rollbackAddFaculty(transaction);
               break;
@@ -74,8 +77,19 @@ class Rollback
     bool rollbackDeleteStudent(Transaction transaction)
     {
        unsigned int facultyID = transaction.getFacultyID();
+       unsigned int studentID = transaction.getStudentID();
        //Student *ptr_student = transaction.getStudentPtr();
-       ptr_studentTree->insert(facultyID, transaction.ptr_student);
+       // 1. from roll back, we need to update the tree by performing inverse
+       // operations
+       // 2. In this case, user deleted a student and wishes to rollback.
+       // so insert the student back into the student tree
+       // given the correct faculty id, insert the student back by using the function
+       //insertNewAdvisee
+       ptr_studentTree->insert(studentID, transaction.ptr_student);
+       ptr_facultyTree->get(facultyID)->insertNewAdvisee(studentID);
+       cout << "rollbackDeleteStudent(): " << " studentID: " << studentID << " facultyID: " << facultyID << endl;
+       cout << "Advisees: " << endl; 
+       ptr_facultyTree->get(facultyID)->printAdvisee();
 
     }
     // This will add faculty to the lists

@@ -23,7 +23,9 @@ int main(int argc, const char * argv[])
    uniqueStudentID = getNewUniqueStudentID();
    cout << "uniqueStudentID: " << uniqueStudentID << endl;
    Student *ptr_S2 = new Student(uniqueStudentID, "Mia", "Junior", "Computer Science", 3.8, 3);
-   Student *ptr_S3 = new Student(uniqueStudentID, "Jack", "Freshmen", "Computer Science", 3.8, 4);
+   uniqueStudentID = getNewUniqueStudentID();
+   Student *ptr_S3 = new Student(uniqueStudentID, "Jack", "Freshmen", "Computer Science", 3.8, 3);
+   uniqueStudentID = getNewUniqueStudentID();
    Student *ptr_S4 = new Student(uniqueStudentID, "Zoey", "Senior", "Computer Science", 3.8, 4);
    Faculty *ptr_F = new Faculty(3, "Johnson", "Professor", "Computer Science");
    Faculty *ptr_F2 = new Faculty(4, "Stevens", "Professor", "Computer Science");
@@ -33,25 +35,33 @@ int main(int argc, const char * argv[])
    #if 1 // test serializaion code, temporary
    string studentSerializeToString = ptr_S->serializeToString();
    Student *ptr_sTest = Student::deserializeFromString(studentSerializeToString);
-   ptr_F2->insertNewAdvisee(ptr_S4->id); 
+   ptr_F2->insertNewAdvisee(ptr_S4->id);
+   ptr_F2->insertNewAdvisee(ptr_S->id);
+   ptr_F->insertNewAdvisee(ptr_S2->id);
+   ptr_F->insertNewAdvisee(ptr_S3->id);
    string facultySerializeToString = ptr_F2->serializeToString();
    Faculty *ptr_fTest = Faculty::deserializeFromString(facultySerializeToString);
    #endif// end of test code
    //Faculty *ptr_F3 = new Faculty(3, "Trace", "Professor", "Computer Science");
    cout << "Yo" << endl;
    cout << *ptr_F;
-   ptr_F->insertNewAdvisee(ptr_S3->id);
+   //ptr_F->insertNewAdvisee(ptr_S3->id);
    cout << endl;
    cout << "Printing Advisees" << endl;
    ptr_F->printAdvisee();
-   ptr_F->insertNewAdvisee(ptr_S4->id);
+   //ptr_F->insertNewAdvisee(ptr_S4->id);
    cout << "Printing Advisees" << endl;
    ptr_F->printAdvisee();
    cout << endl;
+   #if 0
    ptr_F2->insertNewAdvisee(ptr_S->id);
    ptr_F2->printAdvisee();
-   ptr_F2->insertNewAdvisee(ptr_S2->id);
+   ptr_F->insertNewAdvisee(ptr_S2->id);
    ptr_F2->printAdvisee();
+   ptr_F2->insertNewAdvisee(ptr_S4->id);
+   #endif
+
+
 
 
    DoublyLinkedList<int> *ptr_DL = new DoublyLinkedList<int>();
@@ -108,6 +118,8 @@ int main(int argc, const char * argv[])
   //student
   ptr_studentTree->insert(ptr_S->getID(),ptr_S);
   ptr_studentTree->insert(ptr_S2->getID(), ptr_S2);
+  ptr_studentTree->insert(ptr_S3->getID(), ptr_S3);
+  ptr_studentTree->insert(ptr_S4->getID(), ptr_S4);
   ptr_studentTree->printTree();
   //faculty
   ptr_facultyTree->insert(ptr_F->getID(), ptr_F);
@@ -218,13 +230,20 @@ do{
                // From there, we are able to access the size of the linked lists and iterate the correct number of times
                // Then, call getNodeIDAtPos() to return each Student ID in Faculty list.
                // Given the studentID, use printNode to print the student's information
-              for(int i = 0; i < ptr_facultyTree->get(facultyTempID)->adviseeListSize(); ++i ){
+              if(!(ptr_facultyTree->get(facultyTempID)->isAdviseeListEmpty()))
+                 {
+                    for(int i = 0; i < ptr_facultyTree->get(facultyTempID)->adviseeListSize(); ++i ){
 
-               studentTempID = ptr_facultyTree->get(facultyTempID)->getAdviseeIDAtPos(i);
-               ptr_studentTree->printTreeNode(studentTempID);
-              }
+                     studentTempID = ptr_facultyTree->get(facultyTempID)->getAdviseeIDAtPos(i);
+                     ptr_studentTree->printTreeNode(studentTempID);
+                  }
 
-            }
+                }
+              else
+                {
+                      cout << "===Advisee List is empty for faculty id: "<< facultyTempID << endl;
+                }
+             }
          }
 
 
@@ -284,6 +303,19 @@ do{
              facultyID = ptr_studentTree->get(studentID)->advisorField;
              cout << "===Deleting===" << endl;
              ptr_studentTree->printTreeNode(studentID);
+             // RECENTLY ADDED
+             // ===In case the user wants to rollback, add to Transaction===
+             string str_id = to_string(studentID);
+             string transactionDescription = "Delete StudentID " + str_id;
+             string tempName = ptr_studentTree->get(studentID)->name;
+             string tempLevel = ptr_studentTree->get(studentID)->level;
+             string tempMajor = ptr_studentTree->get(studentID)->major;
+             double tempGPA = ptr_studentTree->get(studentID)->gpa;
+             int tempAdvisorField = ptr_studentTree->get(studentID)->advisorField;
+             Student *ptr_Student = new Student(studentID, tempName, tempLevel, tempMajor, tempGPA, tempAdvisorField);
+             Transaction*ptr_transaction = new Transaction(8, ptr_Student, NULL, transactionDescription, studentID,tempAdvisorField);
+             ptr_rollback->addTransaction(*ptr_transaction);
+             // ====end of Transaction====
              ptr_studentTree->deleteNode(studentID);
              cout << "===Updated student database===" << endl;
              ptr_studentTree->printTree();

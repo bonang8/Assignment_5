@@ -19,8 +19,11 @@ getMinNode()
 overloading << operators
   https://docs.microsoft.com/en-us/cpp/standard-library/overloading-the-output-operator-for-your-own-classes?view=vs-2019
 
-split string by a delimiter 
+split string by a delimiter
   https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
+
+c_str
+  https://www.cplusplus.com/reference/string/string/c_str/
 
 Instructions:
        g++ main.cpp Student.cpp Faculty.cpp Tree.h

@@ -28,7 +28,8 @@ void Faculty::insertNewAdvisee(unsigned int id)
 }
 void Faculty::removeAdvisee(unsigned int id)
 {
-  ptr_listAdviseesIDs->remove(id);
+  unsigned int idTemp = ptr_listAdviseesIDs->remove(id);
+  cout << "remove advisee: " << idTemp << endl; 
 }
 void Faculty::printAdvisee()
 {

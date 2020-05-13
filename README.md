@@ -33,6 +33,10 @@ Checking if file exists:
 Appending a file:
    https://stackoverflow.com/questions/2393345/how-to-append-text-to-a-text-file-in-c
 
+ NOTE: The github repo does not accuratly show the amount of work distributed. We
+ used discord to pass code back and forth and Clarisse was the one who was mainly
+ pushing to git.
+
 Instructions:
       -- Make File --
         make all

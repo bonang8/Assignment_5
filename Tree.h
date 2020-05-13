@@ -407,5 +407,26 @@ template<typename TreeType> class BST
 
 #endif
 
+// Jackson added
+void serializeList(string fileName){
+      cout << "inital function running" << endl;
+      serializeListRecursive(fileName, root);
+    }
+void serializeListRecursive(string fileName, TreeNode<TreeType> *node)
+    {
+      if(node != NULL)
+      {
+         cout << "Going through recursively" << endl;
+         if(node->right != NULL){
+           serializeListRecursive(fileName, node->right);
+         }
+         cout << "Serializing in function " << endl;
+         node->classNode->serializeToStringPt2(fileName);
+         if(node->left != NULL){
+           serializeListRecursive(fileName, node->left);
+         }
+      }
+    }
+
 };
 #endif

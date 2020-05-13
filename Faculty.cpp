@@ -29,7 +29,7 @@ void Faculty::insertNewAdvisee(unsigned int id)
 void Faculty::removeAdvisee(unsigned int id)
 {
   unsigned int idTemp = ptr_listAdviseesIDs->remove(id);
-  cout << "remove advisee: " << idTemp << endl; 
+  cout << "remove advisee: " << idTemp << endl;
 }
 void Faculty::printAdvisee()
 {
@@ -140,6 +140,30 @@ string Faculty::serializeToString()
   }
    str_serialization += ",";
    return str_serialization;
+}
+//Jackson added
+void Faculty::serializeToStringPt2(string fileName)
+{
+
+  string str_serialization = to_string(this->id) + "," + this->name + "," + this->level + "," +  this->getDepartment();
+
+  if(!(ptr_listAdviseesIDs->isEmpty()))
+  {
+    int sizeOfList = ptr_listAdviseesIDs->getSize();
+    for( int i = 0; i < sizeOfList; ++i)
+    {
+      str_serialization += ",";
+      unsigned int idAdvisee = ptr_listAdviseesIDs->positionAt(i);
+      str_serialization += to_string(idAdvisee);
+    }
+  }
+   str_serialization += ",";
+   ofstream oFile;
+   oFile.open(fileName, ios_base::app);
+   if(oFile.good()){
+     oFile << str_serialization << endl;
+   }
+   oFile.close();
 }
 
 Faculty *Faculty::deserializeFromString(string str_serialization)

@@ -6,6 +6,7 @@
 #include "Transaction.h"
 #include<iostream>
 #include<string>
+#include<fstream>
 using namespace std;
 unsigned int getNewUniqueStudentID()
 {
@@ -28,8 +29,17 @@ int main(int argc, const char * argv[])
   // will be used for option 13
    Rollback*ptr_rollback = new Rollback(ptr_studentTree, ptr_facultyTree);
 
+   // Jackson included
+   cout << "Reading student and faculty table..." << endl;
    readStudentTable(ptr_studentTree);
    readFacultyTable(ptr_facultyTree);
+   cout << "Done" << endl;
+   ifstream myIFileStudent("studentTable.txt");
+   ifstream myIFileFaculty("facultyTable.txt");
+   ofstream myOFileStudent("studentTable.txt");
+   ofstream myOFileFaculty("facultyTable.txt");
+   // Jackson ended
+
    ptr_studentTree->printTree();
    ptr_facultyTree->printTree();
 
@@ -87,7 +97,13 @@ int main(int argc, const char * argv[])
 
            cout << "Enter the student ID: ";
            cin >> studentID;
-           ptr_studentTree->printTreeNode(studentID);
+           if(ptr_studentTree->search(studentID)){
+             ptr_studentTree->printTreeNode(studentID);
+           }
+           else
+           {
+             cout << "StudentID: " << studentID << " is not in the tree" << endl;
+           }
          }
        // find and display faculty information given the faculty id
          if(answer == 4)
@@ -99,7 +115,14 @@ int main(int argc, const char * argv[])
            }
            cout << "Enter the faculty ID: ";
            cin >> facultyID;
-           ptr_facultyTree->printTreeNode(facultyID);
+           if(ptr_facultyTree->search(facultyID))
+           {
+             ptr_facultyTree->printTreeNode(facultyID);
+           }
+           else
+           {
+             cout << "FacultyID: " << facultyID << " is not in the tree" << endl;
+           }
          }
         //Given a student’s id, print the name and info of their faculty advisor
          if(answer == 5)
@@ -113,7 +136,14 @@ int main(int argc, const char * argv[])
              cin >> tempID;
              if(ptr_studentTree->search(tempID)){
                 int advisorID = ptr_studentTree->get(tempID)->getAdvisorField();
-                ptr_facultyTree->printTreeNode(advisorID);
+                if(ptr_facultyTree->search(advisorID))
+                {
+                   ptr_facultyTree->printTreeNode(advisorID);
+                }
+                else
+                {
+                  cout << "faculty advisor not tree or not assigned to student(-1)" << endl;
+                }
               }
               else
               {
@@ -147,7 +177,7 @@ int main(int argc, const char * argv[])
                 }
               else
                 {
-                      cout << "===Advisee List is empty for faculty id: "<< facultyTempID << endl;
+                      cout << ">>Advisee List is empty for faculty id: "<< facultyTempID << endl;
                 }
              }
          }
@@ -172,24 +202,50 @@ int main(int argc, const char * argv[])
                 cout << "generated valid ID#: " << tempID << endl;
               }
               cout << "Please enter in their name: " << endl;
-              cin >> tempName;
+              cin.ignore();
+              getline(std::cin, tempName);
               cout << "Please enter their level: " << endl;
               cin >> tempLevel;
+              cin.ignore();
               cout << "Please enter in their major: " << endl;
-              cin >> tempMajor;
+              cin.ignore();
+              getline(std::cin, tempMajor);
+              cout << "Please enter in their gpa: " << endl;
+              cin >> tempGPA;
               cout << "Please enter in their advisor field: " << endl;
               cin >> tempAdvisorField;
-              Student *ptr_Student = new Student(tempID, tempName, tempLevel, tempMajor, tempGPA, tempAdvisorField);
-              cout << "Inserting student record into student database" << endl;
-              ptr_studentTree->insert(tempID, ptr_Student);
-              cout << "Inserting student into faculty list of advisees" << endl;
-              ptr_facultyTree->get(tempAdvisorField)->insertNewAdvisee(tempID);
-              cout << "Added Sucessfully" << endl;
-              // store this in transaction
-              string str_id = to_string(tempID);
-              string transactionDescription = "Add StudentID " + str_id;
-              Transaction*ptr_transaction = new Transaction(7, ptr_Student, NULL, transactionDescription,tempID,0);
-              ptr_rollback->addTransaction(*ptr_transaction);
+              if(ptr_facultyTree->search(tempAdvisorField)){
+                  Student *ptr_Student = new Student(tempID, tempName, tempLevel, tempMajor, tempGPA, tempAdvisorField);
+                  cout << "Inserting student record into student database" << endl;
+                  ptr_studentTree->insert(tempID, ptr_Student);
+                  cout << "Inserting student into faculty list of advisees" << endl;
+                  ptr_facultyTree->get(tempAdvisorField)->insertNewAdvisee(tempID);
+                  cout << "Added Sucessfully" << endl;
+                  // store this in transaction
+                  string str_id = to_string(tempID);
+                  string transactionDescription = "Add StudentID " + str_id;
+                  Transaction*ptr_transaction = new Transaction(7, ptr_Student, NULL, transactionDescription,tempID,0);
+                  ptr_rollback->addTransaction(*ptr_transaction);
+              }
+              else
+              {
+                  cout << ">> advisor inputted not in database" << endl;
+                  tempAdvisorField = -1;
+                  Student *ptr_Student = new Student(tempID, tempName, tempLevel, tempMajor, tempGPA, tempAdvisorField);
+                  cout << "Inserting student record into student database" << endl;
+                  ptr_studentTree->insert(tempID, ptr_Student);
+                  // We can't add to list of advisees
+                    //cout << "Inserting student into faculty list of advisees" << endl;
+                    //ptr_facultyTree->get(tempAdvisorField)->insertNewAdvisee(tempID);
+                  cout << "Added Sucessfully" << endl;
+                  // store this in transaction
+                  string str_id = to_string(tempID);
+                  string transactionDescription = "Add StudentID " + str_id;
+                  Transaction*ptr_transaction = new Transaction(7, ptr_Student, NULL, transactionDescription,tempID,0);
+                  ptr_rollback->addTransaction(*ptr_transaction);
+
+              }
+
             }
 
         // Delete a student given the id
@@ -257,11 +313,13 @@ int main(int argc, const char * argv[])
               cout << "generated valid ID#: " << tempID << endl;
             }
             cout << "Please enter in their name: " << endl;
-            cin >> tempName;
+            cin.ignore();
+            getline(std::cin, tempName);
             cout << "Please enter in their level: " << endl;
             cin >> tempLevel;
             cout << "Please enter the department: " << endl;
-            cin >> tempDepartment;
+            cin.ignore();
+            getline(std::cin, tempDepartment);
             Faculty *ptr_Faculty = new Faculty(tempID, tempName, tempLevel, tempDepartment);
             ptr_facultyTree->insert(tempID, ptr_Faculty);
             cout << "Sucessfully inserted" << endl;
@@ -434,12 +492,33 @@ int main(int argc, const char * argv[])
               ptr_rollback->rollback();
 
             }
+            if(answer == 0)
+            {
+              cout << "Hello in 0" << endl;
+
+            }
 
             if(answer == 14){
-              exit(0);
+              break;
             }
 
     }while(setter);
+
+    // Jackson added
+    myOFileFaculty.open("facultyTable.txt", ofstream::out | ofstream::trunc);
+    myOFileFaculty.close();
+    myOFileFaculty.open("facultyTable.txt");
+    myOFileStudent.open("studentTable.txt", ofstream::out | ofstream::trunc);
+    myOFileStudent.close();
+    myOFileStudent.open("studentTable.txt");
+    ptr_facultyTree->serializeList("facultyTable.txt");
+    ptr_studentTree->serializeList("studentTable.txt");
+    myIFileStudent.close();
+    myIFileFaculty.close();
+    myOFileStudent.close();
+    myOFileStudent.close();
+
+
 }
 
 bool readStudentTable(BST<Student>*ptr_studentTree)

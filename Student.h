@@ -42,10 +42,9 @@ class Student:public Records
    friend ostream& operator<<(ostream& os, const Student& s);
    // to serialize
    string serializeToString();
-
-   static Student *deserializeFromString(string str_serialization); 
-
-
+   static Student *deserializeFromString(string str_serialization);
+   //Jackson added
+   void serializeToStringPt2(string fileName);
 
 };
 #endif

@@ -43,5 +43,7 @@ class Faculty:public Records
     // this is th serialize
     string serializeToString();
     static Faculty *deserializeFromString(string str_serialization);
+    //Jackson added 
+    void serializeToStringPt2(string fileName);
 };
 #endif

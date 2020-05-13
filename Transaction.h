@@ -46,7 +46,7 @@ class Transaction{
    }
    unsigned int getFacultyPrevious()
    {
-     return idFacultyPrevious; 
+     return idFacultyPrevious;
    }
    // getters
    int getTransactionType()

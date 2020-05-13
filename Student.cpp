@@ -108,8 +108,20 @@ string Student::serializeToString(){
   //ofstream myOFile;
   //myOFile.open(fileName,ios_base::app);
   // This function serializes the current object to a string with eacj member delimited by a ','. The string can then be written to a file.
-  string str_serialization = to_string(this->id) + "," + this->name + "," + this->level + "," + this->major + "," + to_string(this->gpa) + "," + to_string(this->advisorField) + ",";  
+  string str_serialization = to_string(this->id) + "," + this->name + "," + this->level + "," + this->major + "," + to_string(this->gpa) + "," + to_string(this->advisorField) + ",";
   return str_serialization;
+}
+
+// Jackson added
+void Student::serializeToStringPt2(string fileName){
+  ofstream myOFile;
+  myOFile.open(fileName,ios_base::app);
+  // This function serializes the current object to a string with eacj member delimited by a ','. The string can then be written to a file.
+  string str_serialization = to_string(this->id) + "," + this->name + "," + this->level + "," + this->major + "," + to_string(this->gpa) + "," + to_string(this->advisorField) + ",";
+  if(myOFile.good()){
+    myOFile << str_serialization << endl;
+  }
+  myOFile.close();
 }
 Student *Student::deserializeFromString(string str_serialization)
 {

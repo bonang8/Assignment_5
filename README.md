@@ -44,14 +44,14 @@ Appending a file: <br>
  pushing to git. <br>  
 
 # Instructions: <br>  
-      -- Make File -- <br>  
-      ```
+      -- Make File --  
+      
         make all   
          ./assignment2.exe 
-      ```
+     
 
-      -- g++ -- <br> 
-      ```
+      -- g++ -- 
+      
        g++ *.cpp  OR  g++ main.cpp Student.cpp Faculty.cpp Tree.h Transaction.h Rollback.h
          ./a.out
-      ```
+     

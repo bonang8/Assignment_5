@@ -1,47 +1,53 @@
 # Assignment_5
-Clarisse Bonang
+Programmers: <br> 
+Clarisse Bonang <br> 
   #2298162
-Jackson Goldberg
+Jackson Goldberg <br> 
   #2347419
 
-Trees
-  CPSC_350-02 LECTURE  
+# References 
+Trees<br> 
+  CPSC_350-02 LECTURE <br>  
 
-Doubly Linked Lists.
-  CPSC_350-02 LECTURE
+Doubly Linked Lists. <br>  
+  CPSC_350-02 LECTURE <br>  
 
-overloading << operators
-  https://docs.microsoft.com/en-us/cpp/standard-library/overloading-the-output-operator-for-your-own-classes?view=vs-2019
+overloading << operators <br>  
+  https://docs.microsoft.com/en-us/cpp/standard-library/overloading-the-output-operator-for-your-own-classes?view=vs-2019 <br>  
 
-getMinNode()
-  https://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/
+getMinNode() <br>  
+  https://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/ <br>  
 
-overloading << operators
-  https://docs.microsoft.com/en-us/cpp/standard-library/overloading-the-output-operator-for-your-own-classes?view=vs-2019
+overloading << operators <br>  
+  https://docs.microsoft.com/en-us/cpp/standard-library/overloading-the-output-operator-for-your-own-classes?view=vs-2019 <br>  
 
-split string by a delimiter
-  https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
+split string by a delimiter <br>  
+  https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c <br>  
 
-c_str
-  https://www.cplusplus.com/reference/string/string/c_str/
+c_str <br>  
+  https://www.cplusplus.com/reference/string/string/c_str/ <br>  
 
-  https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
-clearing a file:
-  https://stackoverflow.com/questions/17032970/clear-data-inside-text-file-in-c
-Checking if file exists:
-  https://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-c
-Appending a file:
-   https://stackoverflow.com/questions/2393345/how-to-append-text-to-a-text-file-in-c
+  https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c <br>  
+clearing a file: <br>  
+  https://stackoverflow.com/questions/17032970/clear-data-inside-text-file-in-c <br>  
+Checking if file exists: <br>  
+  https://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-c <br>  
+Appending a file: <br>  
+   https://stackoverflow.com/questions/2393345/how-to-append-text-to-a-text-file-in-c <br>  
 
- NOTE: The github repo does not accuratly show the amount of work distributed. We
- used discord to pass code back and forth and Clarisse was the one who was mainly
- pushing to git.
+ NOTE: The github repo does not accuratly show the amount of work distributed. We <br>  
+ used discord to pass code back and forth and Clarisse was the one who was mainly <br>  
+ pushing to git. <br>  
 
-Instructions:
-      -- Make File --
-        make all
-         ./assignment2.exe
+# Instructions: <br>  
+      -- Make File -- <br>  
+      ```
+        make all   
+         ./assignment2.exe 
+      ```
 
-      -- g++ --
+      -- g++ -- <br> 
+      ```
        g++ *.cpp  OR  g++ main.cpp Student.cpp Faculty.cpp Tree.h Transaction.h Rollback.h
          ./a.out
+      ```

@@ -4,6 +4,10 @@ Clarisse Bonang <br>
   #2298162
 Jackson Goldberg <br> 
   #2347419
+  
+# Description 
+A simple database system using binary search trees. The program allows the user to insert, delete, and query data. The data itself will be persistent (stored on disk), so that you may process it over several sessions. <br> 
+The database contains data that would be commonly found in a university’s computer system. For instance, the information consists of student and faculty records. The information for each will be stored in its own tree. <br> 
 
 # References 
 Trees<br> 
